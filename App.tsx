@@ -11,12 +11,11 @@ import {
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { api, User, OSStatus, UserRole, cn } from './api';
+import { api, User, OSStatus, UserRole, cn } from './api.ts';
 
 const queryClient = new QueryClient();
 
 // --- ANIMATED PAGE WRAPPER ---
-// Fix: Added optional '?' to children to satisfy TypeScript when children are provided via JSX.
 function PageTransition({ children }: { children?: React.ReactNode }) {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
@@ -142,7 +141,7 @@ function Dashboard() {
                 <div key={o.id} className="p-4 bg-white/[0.02] border border-white/5 rounded-xl flex items-center justify-between gap-3 hover:border-cyan-500/30 transition-all">
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-bold text-white leading-none truncate">{o.title}</p>
-                    <p className="text-[9px] text-slate-500 font-black uppercase mt-1 tracking-tight leading-none">OS #{o.os_number} • {o.client_name}</p>
+                    <p className="text-[9px] text-slate-500 font-black uppercase mt-1 tracking-tight tenure leading-none">OS #{o.os_number} • {o.client_name}</p>
                   </div>
                   <StatusBadge status={o.status} size="sm" />
                 </div>
@@ -249,10 +248,7 @@ function ServiceOrdersPage() {
 
       {show && (
         <div className="fixed inset-0 z-[999] flex flex-col items-center justify-center min-h-screen w-screen p-4 sm:p-12 backdrop-blur-2xl bg-black/90 transition-all">
-          {/* Modal Content: Centralização Absoluta sem Offset manual */}
           <div className="bg-[#0b0f1a] border border-white/10 w-full max-w-4xl rounded-[3rem] shadow-[0_60px_200px_rgba(0,0,0,1)] animate-in zoom-in duration-500 flex flex-col overflow-hidden max-h-[90vh]">
-            
-            {/* Header */}
             <div className="flex items-center justify-between px-10 py-8 border-b border-white/5 bg-slate-900/40 shrink-0">
               <h2 className="text-2xl font-black text-white uppercase tracking-tighter italic leading-none">
                 {isEditing ? 'ATUALIZAR REGISTRO' : 'NOVA DEMANDA'}
@@ -261,11 +257,8 @@ function ServiceOrdersPage() {
                 <X className="w-8 h-8" />
               </button>
             </div>
-
-            {/* Content Area (A parte "Rosa" expandida) */}
             <div className="flex-1 overflow-y-auto px-10 sm:px-16 py-14 space-y-16 custom-scroll">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-12">
-                
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Código O.S. (10 dígitos)</label>
                   <input 
@@ -275,7 +268,6 @@ function ServiceOrdersPage() {
                     placeholder="0000000000"
                   />
                 </div>
-
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Título do Serviço *</label>
                   <input 
@@ -285,7 +277,6 @@ function ServiceOrdersPage() {
                     className="w-full bg-[#020617] border border-slate-800 p-5 rounded-2xl text-white outline-none focus:border-cyan-500/50 font-bold text-sm transition-all" 
                   />
                 </div>
-
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Cliente / Unidade *</label>
                   <input 
@@ -295,7 +286,6 @@ function ServiceOrdersPage() {
                     className="w-full bg-[#020617] border border-slate-800 p-5 rounded-2xl text-white outline-none focus:border-cyan-500/50 font-bold text-sm transition-all" 
                   />
                 </div>
-
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Contato Responsável</label>
                   <input 
@@ -304,7 +294,6 @@ function ServiceOrdersPage() {
                     className="w-full bg-[#020617] border border-slate-800 p-5 rounded-2xl text-white outline-none focus:border-cyan-500/50 font-bold text-sm transition-all" 
                   />
                 </div>
-
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Estado Operacional</label>
                   <select 
@@ -318,7 +307,6 @@ function ServiceOrdersPage() {
                     <option value="atrasado">Atrasado</option>
                   </select>
                 </div>
-
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Nível de Prioridade</label>
                   <select 
@@ -332,7 +320,6 @@ function ServiceOrdersPage() {
                     <option value="urgente">Urgente</option>
                   </select>
                 </div>
-
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Data Programada</label>
                   <input 
@@ -342,7 +329,6 @@ function ServiceOrdersPage() {
                     className="w-full bg-[#020617] border border-slate-800 p-5 rounded-2xl text-white outline-none focus:border-cyan-500/50 font-bold text-sm transition-all" 
                   />
                 </div>
-
                 <div className="space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Categoria Técnica</label>
                   <input 
@@ -351,7 +337,6 @@ function ServiceOrdersPage() {
                     className="w-full bg-[#020617] border border-slate-800 p-5 rounded-2xl text-white outline-none focus:border-cyan-500/50 font-bold text-sm transition-all" 
                   />
                 </div>
-
                 <div className="sm:col-span-2 space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Técnico Encarregado</label>
                   <div className="relative">
@@ -363,7 +348,6 @@ function ServiceOrdersPage() {
                     />
                   </div>
                 </div>
-
                 <div className="sm:col-span-2 space-y-4">
                   <label className="text-[11px] font-black text-slate-500 uppercase tracking-widest ml-1">Descrição Detalhada</label>
                   <textarea 
@@ -374,8 +358,6 @@ function ServiceOrdersPage() {
                 </div>
               </div>
             </div>
-
-            {/* Footer */}
             <div className="px-10 py-10 border-t border-white/5 bg-slate-950/90 shrink-0 flex items-center justify-end gap-6">
               <button 
                 onClick={() => setShow(false)} 
@@ -571,7 +553,7 @@ function UsersPage() {
               </div>
               <div className="sm:col-span-2 flex flex-col sm:flex-row gap-5 mt-10">
                 <button onClick={() => setShowModal(false)} className="order-2 sm:order-1 flex-1 py-5 border border-slate-800 text-slate-500 font-black uppercase text-[10px] tracking-widest rounded-2xl hover:bg-white/5 transition-all">Cancelar</button>
-                <button onClick={save} className="order-1 sm:order-2 flex-1 py-5 bg-cyan-600 text-white font-black uppercase text-[10px] tracking-widest rounded-2xl shadow-[0_15px_40px_rgba(6,182,212,0.4)] active:scale-95 transition-all">SALVAR MEMBRO</button>
+                <button onClick={save} className="order-1 sm:order-2 flex-1 py-5 bg-cyan-600 text-white font-black uppercase text-[10px] tracking-widest rounded-2xl shadow-[0_15px_40px_rgba(0,0,0,0.4)] active:scale-95 transition-all">SALVAR MEMBRO</button>
               </div>
             </div>
           </div>
@@ -580,7 +562,7 @@ function UsersPage() {
 
       {showDelete && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center p-6 backdrop-blur-md bg-black/75">
-           <div className="bg-[#0b0f1a] border border-red-500/20 w-full max-w-sm rounded-[2.5rem] p-10 text-center animate-in zoom-in duration-300 shadow-2xl">
+           <div className="bg-[#0b0f1a] border border-red-500/20 w-full max-sm rounded-[2.5rem] p-10 text-center animate-in zoom-in duration-300 shadow-2xl">
               <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-6" />
               <h3 className="text-xl font-black text-white uppercase tracking-tighter mb-4 leading-none">Excluir?</h3>
               <p className="text-xs text-slate-500 font-bold leading-relaxed mb-10 italic">Esta ação é irreversível e removerá o acesso.</p>

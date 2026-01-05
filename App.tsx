@@ -16,7 +16,8 @@ import { api, User, OSStatus, UserRole, cn } from './api';
 const queryClient = new QueryClient();
 
 // --- ANIMATED PAGE WRAPPER ---
-function PageTransition({ children }: { children: React.ReactNode }) {
+// Fix: Added optional '?' to children to satisfy TypeScript when children are provided via JSX.
+function PageTransition({ children }: { children?: React.ReactNode }) {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 10);
